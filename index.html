@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BluePrint Printing — Printing Shop</title>
+  <meta name="description"
+    content="Full-service print shop — flyers, banners, shirts, IDs, and more. Modern aesthetic, fast turnaround." />
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+  <style>
+    /* =======================
+       Variables & reset
+       ======================= */
+    :root {
+      --blue-50: #1380f5;
+      --blue-100: #CFE9FF;
+      --blue-400: #2B8AF6;
+      --blue-600: #1160D8;
+      --midnight: #061025;
+      --muted: #65748B;
+      --glass: rgba(255, 255, 255, 0.08);
+      --card-shadow: 0 8px 30px rgba(3, 10, 27, 0.18);
+      --radius: 14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      color: var(--midnight);
+      background: linear-gradient(180deg, var(--blue-50), #2915df 35%);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.45;
+    }
+
+    /* Decorative blurred radial "aesthetic" background */
+    .bg-decor {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        radial-gradient(800px 400px at 10% 20%, rgba(43, 138, 246, 0.14), transparent 8%),
+        radial-gradient(600px 300px at 85% 80%, rgba(17, 96, 216, 0.12), transparent 8%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.85));
+      backdrop-filter: blur(8px) saturate(120%);
+      transition: opacity .6s ease;
+    }
+
+    /* Page container */
+    .container {
+      max-width: 1150px;
+      margin: 32px auto;
+      padding: 24px
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 20px;
+      box-shadow: var(--card-shadow)
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      align-items: center
+    }
+
+    nav a {
+      color: var(--midnight);
+      text-decoration: none;
+      font-weight: 600
+    }
+
+    .cta {
+      background: linear-gradient(90deg, var(--blue-400), var(--blue-600));
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(17, 96, 216, 0.22)
+    }
+
+    /* Mobile hamburger */
+    .hamburger {
+      display: none;
+      border: 0;
+      background: none
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      gap: 28px;
+      align-items: center;
+      margin-top: 20px
+    }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.72));
+      padding: 28px;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow)
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 36px;
+      color: var(--midnight)
+    }
+
+    .hero p {
+      color: var(--muted);
+      margin-top: 8px
+    }
+
+    .hero .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px
+    }
+
+    /* Quick services grid */
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px
+    }
+
+    .service {
+      background: var(--glass);
+      padding: 14px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      display: flex;
+      gap: 12px;
+      align-items: center
+    }
+
+    .service .icon {
+      width: 48px;
+      height: 48;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white
+    }
+
+    /* Right hero image */
+    .hero-visual {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow)
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block
+    }
+
+    .overlay-badge {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      background: linear-gradient(90deg, #ffffffcc, #ffffffaa);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-weight: 700
+    }
+
+    /* Staff section */
+    .team {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 26px
+    }
+
+    .staff-card {
+      background: rgb(255, 255, 255);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(5, 15, 34, 0.08);
+      transition: transform .28s ease
+    }
+
+    .staff-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 10px
+    }
+
+    .staff-card:hover {
+      transform: translateY(-8px)
+    }
+
+    .staff-name {
+      font-weight: 700;
+      margin-top: 8px
+    }
+
+    .staff-role {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    /* Services full */
+    .services-full {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+      margin-top: 26px
+    }
+
+    .service-list {
+      display: grid;
+      gap: 12px
+    }
+
+    .card {
+      background: rgb(255, 255, 255);
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: var(--card-shadow)
+    }
+
+    /* Contact */
+    form {
+      display: grid;
+      gap: 10px
+    }
+
+    input,
+    textarea,
+    select {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #E7EEF9
+    }
+
+    button[type=submit] {
+      padding: 12px;
+      border-radius: 10px;
+      border: 0;
+      background: linear-gradient(90deg, var(--blue-400), var(--blue-600));
+      color: white;
+      font-weight: 700
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      padding-bottom: 40px
+    }
+
+    /* Responsive */
+    @media (max-width:980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        height: 300px
+      }
+
+      .services {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .team {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      nav {
+        display: none
+      }
+
+      .hamburger {
+        display: block
+      }
+    }
+
+    @media (max-width:600px) {
+      .services {
+        grid-template-columns: 1fr
+      }
+
+      .team {
+        grid-template-columns: 1fr
+      }
+
+      .container {
+        padding: 16px;
+        margin: 10px
+      }
+
+      .logo {
+        width: 48px;
+        height: 48
+      }
+
+      .hero h1 {
+        font-size: 28px
+      }
+    }
+
+    /* Micro animations */
+    .fade-in {
+      animation: fadeIn .9s cubic-bezier(.2, .9, .2, 1) both
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    /* subtle floating */
+    .floaty {
+      animation: floaty 6s ease-in-out infinite
+    }
+
+    @keyframes floaty {
+      0% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+
+      100% {
+        transform: translateY(0)
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-decor"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">BP</div>
+        <div>
+          <div style="font-weight:800;font-size:16px">BluePrint Printing Shop</div>
+          <div style="color:var(--muted);font-size:13px">Quality • Fast • Local</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#team">Our Team</a>
+        <a class="cta" href="#contact">Contact us now!</a>
+      </nav>
+
+      <button class="hamburger" aria-label="menu" id="hamburger">☰</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-card fade-in">
+          <h1>Fast, beautiful prints for your business or event</h1>
+          <p>Posters, flyers, tarpaulins, customized shirts, IDs — same-day pickup available. High-quality materials and
+            professional color matching.</p>
+
+          <div class="actions">
+            <a class="cta" href="#contact">Request here</a>
+            <a href="#services"
+              style="padding:10px 14px;border-radius:10px;background:transparent;border:1px solid var(--blue-100);font-weight:700;text-decoration:none;color:var(--midnight)">Explore
+              Services</a>
+          </div>
+
+          <div class="services" style="margin-top:18px">
+            <div class="service">
+              <div class="icon" style="background:linear-gradient(90deg,var(--blue-400),var(--blue-600));width:48px">PR
+              </div>
+              <div>
+                <div style="font-weight:700">Print & Copy</div>
+                <div style="font-size:13px;color:var(--muted)">Flyers, booklets, manuals</div>
+              </div>
+            </div>
+
+            <div class="service">
+              <div class="icon" style="background:linear-gradient(90deg,#14C38E,#099268);width:48px">LD</div>
+              <div>
+                <div style="font-weight:700">Large Format</div>
+                <div style="font-size:13px;color:var(--muted)">Banners, tarps, signage</div>
+              </div>
+            </div>
+
+            <div class="service">
+              <div class="icon" style="background:linear-gradient(90deg,#FF8A65,#FF6F61);width:48px">DS</div>
+              <div>
+                <div style="font-weight:700">Design & Finish</div>
+                <div style="font-size:13px;color:var(--muted)">Design help, lamination, binding</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <aside class="hero-visual fade-in floaty">
+          <!-- Replace the image src with a photo of the 3 staff members (recommended size 1200x800) -->
+          <img src="Christ.png" alt="Our friendly staff" />
+          <div class="overlay-badge">Meet our team — friendly & professional</div>
+        </aside>
+      </section>
+
+      <!-- Team section -->
+      <section id="team">
+        <h2 style="margin-top:26px">Our Team</h2>
+        <p style="color:var(--muted);margin-top:6px">Experienced staff ready to help — click photos to view contact
+          info.</p>
+
+        <div class="team">
+          <!-- Staff cards: replace images/staff1.jpg etc with real photos -->
+          <article class="staff-card card" data-name="Rosito" data-role="Manager" data-phone="0927-797-8469"
+            data-email="jayansao515@gmail.com">
+            <img src="Jay-ar.png" alt="Staff 1">
+            <div class="staff-name">Rosito Abarico Jr.</div>
+            <div class="staff-role">Manager</div>
+          </article>
+
+          <article class="staff-card card" data-name="Khimveer" data-role="Assistant" data-phone="0970-679-2451"
+            data-email="khimveralabata@gmail.com">
+            <img src="Khimveer.png" alt="Staff 2">
+            <div class="staff-name">Khimveer Alabata</div>
+            <div class="staff-role">Assistant</div>
+          </article>
+
+          <article class="staff-card card" data-name="Jhay" data-role="Print Tech" data-phone="0951-185-2486"
+            data-email="jhaycoraza@gmail.com">
+            <img src="Jhay.png" alt="Staff 3">
+            <div class="staff-name">Jhay Coraza</div>
+            <div class="staff-role">Print Technician</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="services" class="services-full">
+        <div>
+          <h3 style="margin-top:18px">Services & Solutions</h3>
+          <div class="service-list">
+            <div class="card">
+              <h4>Graphic Design & Prepress</h4>
+              <p style="color:var(--muted)">Design assistance and preflight check to make sure your files print exactly
+                as expected. Color correction and layout optimization included.</p>
+            </div>
+
+            <div class="card">
+              <h4>Digital & Offset Printing</h4>
+              <p style="color:var(--muted)">Small-run digital prints and larger offset jobs. Products include brochures,
+                flyers, catalogs, and more.</p>
+            </div>
+
+            <div class="card">
+              <h4>Large Format</h4>
+              <p style="color:var(--muted)">Vinyl banners, tarpaulins, posters, and roller banners with high-durability
+                inks.</p>
+            </div>
+
+            <div class="card">
+              <h4>Finishing</h4>
+              <p style="color:var(--muted)">Lamination, binding, cutting, die-cutting, and variable data printing.</p>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h4 id="pricing">Starting Prices</h4>
+            <ul style="color:var(--muted);padding-left:18px">
+              <li>Flyers (A5) — ₱150 / 100 pcs</li>
+              <li>Business Cards — ₱500 / 500 pcs</li>
+              <li>Banner (3x6ft) — ₱350 / full color</li>
+              <li>Shirt Printing — ₱350 / piece (depends on qty)</li>
+            </ul>
+            <p style="font-size:13px;color:var(--muted)">Prices are estimates. Exact quote available after file review.
+            </p>
+          </div>
+
+          <div class="card" style="margin-top:12px">
+            <h4>How it works</h4>
+            <ol style="color:var(--muted);padding-left:18px">
+              <li>Send file or request design</li>
+              <li>Approve digital proof</li>
+              <li>Payment & production</li>
+              <li>Pick up or delivery</li>
+            </ol>
+          </div>
+        </aside>
+      </section>
+
+      <section id="contact" style="margin-top:22px">
+        <h3>Contact & Request</h3>
+        <div style="display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:12px">
+          <div class="card">
+            <form id="contactForm">
+              <input type="text" id="name" placeholder="Your name" required />
+              <input type="email" id="email" placeholder="Email address" required />
+              <input type="text" id="phone" placeholder="Phone (optional)" />
+              <select id="serviceChoice">
+                <option value="flyer">Flyer / Leaflet</option>
+                <option value="card">Business Card</option>
+                <option value="banner">Banner</option>
+                <option value="shirt">Shirt Printing</option>
+                <option value="other">Other</option>
+              </select>
+              <textarea id="message" rows="4"
+                placeholder="Tell us about your job (size, quantity, deadline)"></textarea>
+              <button type="submit">Send Request</button>
+            </form>
+            <p id="formMessage" style="color:var(--muted);font-size:13px;margin-top:8px"></p>
+          </div>
+
+          <aside class="card">
+            <h4>Visit Us</h4>
+            <p style="color:var(--muted)">Barangay Kabatan, Vincenzo Sagun, Zamboanga del Sur</p>
+            <p style="margin-top:10px"><strong>Open:</strong> Mon–Sat 8:00 AM — 6:00 PM</p>
+            <p style="margin-top:6px"><strong>Phone:</strong> 0927-797-8469</p>
+            <div style="margin-top:12px">
+              <a href="#" class="cta">Call Now</a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div style="margin-top:18px">© <span id="year"></span> BluePrint Printing — All rights reserved.</div>
+    </footer>
+  </div>
+
+  <!-- Modal template for staff contact -->
+  <div id="modal"
+    style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,10,27,0.45);z-index:40">
+    <div
+      style="width:360px;background:white;border-radius:12px;padding:16px;box-shadow:var(--card-shadow);position:relative">
+      <button id="modalClose"
+        style="position:absolute;right:8px;top:6px;border:0;background:none;font-size:18px">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // Basic interactivity
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu (simple)
+    const hamburger = document.getElementById('hamburger');
+    hamburger.addEventListener('click', () => {
+      const nav = document.querySelector('nav');
+      if (nav.style.display === 'flex') nav.style.display = '';
+      else nav.style.display = 'flex';
+    });
+
+    // Staff modal
+    const staffCards = document.querySelectorAll('.staff-card');
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+
+    staffCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const name = card.dataset.name || 'Staff';
+        const role = card.dataset.role || '';
+        const phone = card.dataset.phone || 'N/A';
+        const email = card.dataset.email || 'N/A';
+
+        modalBody.innerHTML = `<h3 style=\"margin:0 0 6px 0\">${name}</h3>
+        <div style=\"color:var(--muted);margin-bottom:10px\">${role}</div>
+        <div style=\"font-size:14px;margin-bottom:8px\"><strong>Phone:</strong> ${phone}</div>
+        <div style=\"font-size:14px;margin-bottom:12px\"><strong>Email:</strong> ${email}</div>
+        <div style=\"display:flex;gap:8px\"> 
+          <a href=\"tel:${phone}\" style=\"padding:8px 12px;border-radius:8px;border:0;background:linear-gradient(90deg,var(--blue-400),var(--blue-600));color:white;text-decoration:none;font-weight:700\">Call</a>
+          <a href=\"mailto:${email}\" style=\"padding:8px 12px;border-radius:8px;border:1px solid #E7EEF9;color:var(--midnight);text-decoration:none;font-weight:700\">Email</a>
+        </div>`;
+
+        modal.style.display = 'flex';
+      });
+    });
+    modalClose.addEventListener('click', () => modal.style.display = 'none');
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none' });
+
+    // Contact form: local demo handling
+    const form = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // This is a demo. In production, hook this to your backend or email service.
+      const name = document.getElementById('name').value;
+      const service = document.getElementById('serviceChoice').value;
+      formMessage.textContent = `Thanks ${name}! We received your request for "${service}". We'll contact you shortly.`;
+      form.reset();
+    });
+
+    // Small progressive enhancement: lazy load images if supported
+    document.addEventListener('DOMContentLoaded', () => {
+      const imgs = document.querySelectorAll('img');
+      imgs.forEach(img => img.loading = 'lazy');
+    });
+
+  </script>
+</body>
+
+</html>
